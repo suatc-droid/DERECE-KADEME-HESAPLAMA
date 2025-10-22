@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gelişmiş Memuriyet Hesaplama</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            opacity: 0.8;
+        }
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+          -webkit-appearance: none; 
+          margin: 0; 
+        }
+        input[type=number] {
+          -moz-appearance: textfield;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-2xl bg-white rounded-xl shadow-lg p-6 md:p-8">
+        
+        <div class="text-center mb-8">
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Gelişmiş Memuriyet Hesaplama</h1>
+            <p class="text-gray-500 mt-2">Derece ve kademenizi tüm detaylarıyla hesaplayın.</p>
+        </div>
+
+        <!-- Form Alanı -->
+        <form id="hesaplamaFormu" class="space-y-6">
+            
+            <!-- Temel Bilgiler Bölümü -->
+            <div>
+                <h3 class="text-lg font-semibold text-gray-900 border-b pb-2 mb-4">Temel Bilgiler</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="egitim" class="block text-sm font-medium text-gray-700 mb-1">Eğitim Durumu / Unvan</label>
+                        <select id="egitim" onchange="toggleDinamikAlanlar()" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                            <option value="ilk">İlkokul</option>
+                            <option value="orta">Ortaokul</option>
+                            <option value="lise" selected>Lise ve Dengi</option>
+                            <option value="onlisans">Önlisans (2 Yıllık)</option>
+                            <option value="saglik_onlisans">Sağlık ÖnLisans (2 Yıllık)</option>
+                            <option value="lisans">Lisans (4 Yıllık)</option>
+                            <option value="saglik_lisans">Sağlık Lisans (4 Yıllık)</option>
+                            <option value="dis_tabibi">Diş Tabibi</option>
+                            <option value="tabip">Tabip</option>
+                            <option value="uzman_tabip">Uzman Tabip</option> <!-- YENİ EKLENDİ -->
+                            <option value="yukseklisans">Yüksek Lisans (Doğrudan)</option>
+                            <option value="doktora">Doktora</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="baslamaTarihi" class="block text-sm font-medium text-gray-700 mb-1">İlk Göreve Başlama Tarihi</label>
+                        <input type="date" id="baslamaTarihi" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                    </div>
+                </div>
+                
+                <!-- Yüksek Lisans (Lisans seçilirse görünür) -->
+                <div id="yuksekLisansAlani" class="hidden mt-4 pl-1">
+                    <div class="flex items-start">
+                        <input id="yuksekLisansVarMi" type="checkbox" class="h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 mt-0.5">
+                        <label for="yuksekLisansVarMi" class="ml-3 block text-sm font-medium text-gray-700">Yüksek lisansınız var mı? (+1 Kademe)</label>
+                    </div>
+                </div>
+
+                <!-- İstifa Bilgileri (Tabip veya Uzman Tabip seçilirse görünür) -->
+                <div id="tabipIstifaAlani" class="hidden mt-4 space-y-4">
+                    <hr>
+                    <h4 class="text-md font-semibold text-gray-800">İstifa Bilgileri</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="istifaTarihi" class="block text-sm font-medium text-gray-700 mb-1">İstifa Tarihi</label>
+                            <input type="date" id="istifaTarihi" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                        </div>
+                        <div>
+                            <label for="tekrarBaslamaTarihi" class="block text-sm font-medium text-gray-700 mb-1">Tekrar Göreve Başlama T.</label>
+                            <input type="date" id="tekrarBaslamaTarihi" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1 pl-1">İki tarih arasındaki süre hizmet sürenizden düşülecektir.</p>
+                </div>
+            </div>
+
+            <!-- İstisnai Durumlar ve Hizmet Detayları Bölümü -->
+            <div>
+                <h3 class="text-lg font-semibold text-gray-900 border-b pb-2 mb-4">İstisnai Durumlar ve Hizmet Detayları</h3>
+                <div class="space-y-4">
+                    
+                    <!-- Kadroya Geçiş -->
+                    <div class="flex items-start">
+                        <input id="kadroyaGecisVarMi" type="checkbox" onchange="toggleKadroTarihi()" class="h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 mt-0.5">
+                        <label for="kadroyaGecisVarMi" class="ml-3 block text-sm font-medium text-gray-700">Sözleşmeli statüden kadroya geçtim.</label>
+                    </div>
+                    <div id="kadroTarihiAlani" class="hidden pl-8">
+                        <label for="kadroyaGecisTarihi" class="block text-sm font-medium text-gray-700 mb-1">Kadroya Geçiş Tarihi</label>
+                        <input type="date" id="kadroyaGecisTarihi" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                    </div>
+                    
+                    <hr class="my-2">
+                    
+                    <!-- Ücretsiz İzin -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Ücretsiz İzin Süresi (Toplam)</label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <input type="number" id="izinYil" placeholder="Yıl" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition text-center">
+                            <input type="number" id="izinAy" placeholder="Ay" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition text-center">
+                            <input type="number" id="izinGun" placeholder="Gün" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition text-center">
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1 pl-1">Bu süre, hizmet sürenizden düşülecektir.</p>
+                    </div>
+
+                    <hr class="my-2">
+                    
+                    <!-- Hizmet Bölgesi -->
+                    <div>
+                        <label for="hizmetBolgesi" class="block text-sm font-medium text-gray-700 mb-1">Görev Yapılan Hizmet Bölgesi</label>
+                        <select id="hizmetBolgesi" onchange="toggleBolgeTarihAlani()" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                            <option value="0">Seçiniz...</option>
+                            <option value="1">1. Bölge</option>
+                            <option value="2">2. Bölge</option>
+                            <option value="3">3. Bölge</option>
+                            <option value="4">4. Bölge</option>
+                            <option value="5">5. Bölge</option>
+                            <option value="6">6. Bölge</option>
+                        </select>
+                    </div>
+                    <!-- 6. Bölge Tarih Alanı (Gizli) -->
+                    <div id="bolgeTarihAlani" class="hidden pl-2 space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                             <div>
+                                <label for="bolgeGorevBaslamaTarihi" class="block text-sm font-medium text-gray-700 mb-1">Bölgedeki Göreve Başlama T.</label>
+                                <input type="date" id="bolgeGorevBaslamaTarihi" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                             </div>
+                             <div>
+                                <label for="bolgeGorevBitisTarihi" class="block text-sm font-medium text-gray-700 mb-1">Bölgedeki Görev Bitiş T. (Varsa)</label>
+                                <input type="date" id="bolgeGorevBitisTarihi" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                             </div>
+                        </div>
+                         <p class="text-xs text-gray-500 mt-1 pl-1">Ek kademe, 6. bölgede geçen her 2 kadrolu hizmet yılı için verilir. Hala çalışıyorsanız Bitiş Tarihini boş bırakın.</p>
+                    </div>
+
+                    <hr class="my-2">
+                    
+                    <!-- Disiplin Cezası -->
+                    <div class="flex items-start">
+                        <input id="cezaYok" type="checkbox" class="h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 mt-0.5">
+                        <label for="cezaYok" class="ml-3 block text-sm font-medium text-gray-700">Son 8 yıl içinde disiplin cezası almadım.</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hesapla Butonu -->
+            <button type="button" onclick="hesapla()" class="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-transform transform hover:scale-105 shadow-md">
+                Hesapla
+            </button>
+        </form>
+
+        <!-- Sonuç Alanı -->
+        <div id="sonucAlani" class="hidden mt-6 p-4 border-l-4 rounded-r-lg"></div>
+        
+    </div>
+
+    <!-- JavaScript Kodları -->
+    <script>
+        
+        // Eğitim durumuna göre Y. Lisans ve İstifa alanlarını göster/gizle
+        function toggleDinamikAlanlar() {
+            const egitim = document.getElementById('egitim').value;
+            
+            // Yüksek Lisans Alanı
+            const yuksekLisansAlani = document.getElementById('yuksekLisansAlani');
+            const isLisans = egitim === 'lisans' || egitim === 'saglik_lisans';
+            yuksekLisansAlani.classList.toggle('hidden', !isLisans);
+            if (!isLisans) document.getElementById('yuksekLisansVarMi').checked = false;
+
+            // Tabip İstifa Alanı (Uzman Tabip için de geçerli)
+            const tabipIstifaAlani = document.getElementById('tabipIstifaAlani');
+            const isTabip = egitim === 'tabip' || egitim === 'uzman_tabip'; // GÜNCELLENDİ
+            tabipIstifaAlani.classList.toggle('hidden', !isTabip);
+            if (!isTabip) {
+                document.getElementById('istifaTarihi').value = '';
+                document.getElementById('tekrarBaslamaTarihi').value = '';
+            }
+        }
+
+        // Kadroya geçiş tarihi alanını göster/gizle
+        function toggleKadroTarihi() {
+            document.getElementById('kadroTarihiAlani').classList.toggle('hidden', !document.getElementById('kadroyaGecisVarMi').checked);
+        }
+
+        // 6. Bölge tarih alanlarını göster/gizle
+        function toggleBolgeTarihAlani() {
+            const hizmetBolgesi = document.getElementById('hizmetBolgesi').value;
+            const bolgeTarihAlani = document.getElementById('bolgeTarihAlani');
+            const isAltinciBolge = hizmetBolgesi === '6';
+            bolgeTarihAlani.classList.toggle('hidden', !isAltinciBolge);
+            if(!isAltinciBolge) {
+                document.getElementById('bolgeGorevBaslamaTarihi').value = '';
+                document.getElementById('bolgeGorevBitisTarihi').value = '';
+            }
+        }
+
+        /**
+         * İki tarih arasındaki farkı yıl, ay ve gün olarak hesaplar.
+         * @param {Date} start Başlangıç tarihi
+         * @param {Date} end Bitiş tarihi
+         * @returns {object} { years: number, months: number, days: number }
+         */
+        function calculateDateDifference(start, end) {
+            if (start > end) return { years: 0, months: 0, days: 0 };
+            
+            let years = end.getFullYear() - start.getFullYear();
+            let months = end.getMonth() - start.getMonth();
+            let days = end.getDate() - start.getDate();
+
+            if (days < 0) {
+                months--;
+                days += new Date(end.getFullYear(), end.getMonth(), 0).getDate();
+            }
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+            return { years, months, days };
+        }
+
+        // Ana Hesaplama Fonksiyonu
+        function hesapla() {
+            const sonucAlani = document.getElementById('sonucAlani');
+            sonucAlani.innerHTML = '';
+            sonucAlani.classList.add('hidden');
+
+            function showError(message) {
+                sonucAlani.innerHTML = `<p class="text-md">${message}</p>`;
+                sonucAlani.className = 'mt-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-r-lg text-red-700';
+                sonucAlani.classList.remove('hidden');
+            }
+
+            // 1. GİRDİLERİ AL VE DOĞRULA
+            const baslamaTarihiString = document.getElementById('baslamaTarihi').value;
+            if (!baslamaTarihiString) return showError('Lütfen geçerli bir ilk göreve başlama tarihi seçin.');
+
+            const baslamaTarihi = new Date(baslamaTarihiString);
+            const bugun = new Date();
+            if (baslamaTarihi > bugun) return showError('İlk başlama tarihi gelecek bir tarih olamaz.');
+            
+            // 2. BRÜT HİZMET SÜRESİNİ HESAPLA
+            const brutHizmet = calculateDateDifference(baslamaTarihi, bugun);
+            
+            // 3. KESİNTİLERİ HESAPLA
+            const izinYil = parseInt(document.getElementById('izinYil').value) || 0;
+            const izinAy = parseInt(document.getElementById('izinAy').value) || 0;
+            const izinGun = parseInt(document.getElementById('izinGun').value) || 0;
+
+            const istifaTarihiString = document.getElementById('istifaTarihi').value;
+            const tekrarBaslamaTarihiString = document.getElementById('tekrarBaslamaTarihi').value;
+            let istifaSuresi = { years: 0, months: 0, days: 0 };
+
+            if (istifaTarihiString && tekrarBaslamaTarihiString) {
+                const istifaTarihi = new Date(istifaTarihiString);
+                const tekrarBaslamaTarihi = new Date(tekrarBaslamaTarihiString);
+
+                if (istifaTarihi > tekrarBaslamaTarihi) return showError('Tekrar başlama tarihi, istifa tarihinden önce olamaz.');
+                if (istifaTarihi < baslamaTarihi) return showError('İstifa tarihi, ilk başlama tarihinden önce olamaz.');
+                
+                istifaSuresi = calculateDateDifference(istifaTarihi, tekrarBaslamaTarihi);
+            } else if (istifaTarihiString || tekrarBaslamaTarihiString) {
+                return showError('Lütfen hem istifa hem de tekrar başlama tarihini girin (veya ikisini de boş bırakın).');
+            }
+
+            const toplamKesintiYil = izinYil + istifaSuresi.years;
+            const toplamKesintiAy = izinAy + istifaSuresi.months;
+            const toplamKesintiGun = izinGun + istifaSuresi.days;
+
+            // 4. NET HİZMET SÜRESİNİ HESAPLA
+            let netGun = brutHizmet.days - toplamKesintiGun;
+            let netAy = brutHizmet.months - toplamKesintiAy;
+            let netYil = brutHizmet.years - toplamKesintiYil;
+
+            if (netGun < 0) { netAy--; netGun += 30; }
+            if (netAy < 0) { netYil--; netAy += 12; }
+            
+            const netHizmetSuresi = { years: Math.max(0, netYil), months: Math.max(0, netAy), days: Math.max(0, netGun) };
+            const hizmetYili = netHizmetSuresi.years;
+            
+            // 5. BAŞLANGIÇ VE BONUSLARI AYARLA
+            const egitim = document.getElementById('egitim').value;
+            const cezaYok = document.getElementById('cezaYok').checked;
+            const yuksekLisansVarMi = document.getElementById('yuksekLisansVarMi').checked;
+            const kadroyaGecisVarMi = document.getElementById('kadroyaGecisVarMi').checked;
+            const kadroyaGecisTarihiString = document.getElementById('kadroyaGecisTarihi').value;
+            
+            let kadroluBaslamaTarihi = baslamaTarihi;
+            if (kadroyaGecisVarMi) {
+                if (!kadroyaGecisTarihiString) return showError('Kadroya geçiş tarihi girilmelidir.');
+                kadroluBaslamaTarihi = new Date(kadroyaGecisTarihiString);
+                if (kadroluBaslamaTarihi < baslamaTarihi) return showError('Kadroya geçiş tarihi, ilk başlama tarihinden önce olamaz.');
+            }
+            
+            const is2016Oncesi = baslamaTarihi < new Date('2016-01-15');
+            let baslangicDerece = 0, baslangicKademe = 0;
+
+            switch (egitim) {
+                case 'ilk': baslangicDerece = 15; baslangicKademe = 1; break;
+                case 'orta': baslangicDerece = 14; baslangicKademe = 2; break;
+                case 'lise': baslangicDerece = 13; baslangicKademe = 3; break;
+                case 'onlisans': baslangicDerece = 10; baslangicKademe = 2; break;
+                case 'saglik_onlisans': baslangicDerece = 10; baslangicKademe = 2; break;
+                case 'lisans': baslangicDerece = 9; baslangicKademe = 1; break;
+                case 'saglik_lisans': baslangicDerece = 8; baslangicKademe = 1; break;
+                case 'dis_tabibi': baslangicDerece = 8; baslangicKademe = 2; break;
+                case 'tabip': baslangicDerece = 8; baslangicKademe = 3; break;
+                case 'uzman_tabip': baslangicDerece = 8; baslangicKademe = 3; break; // GÜNCELLENDİ (Başlangıç Tabip ile aynı)
+                case 'yukseklisans': baslangicDerece = 9; baslangicKademe = 2; break;
+                case 'doktora': baslangicDerece = 9; baslangicKademe = 1; break;
+            }
+
+            let bonusKademeler = 0;
+            if (cezaYok) bonusKademeler++;
+            if (is2016Oncesi) bonusKademeler++;
+            if (yuksekLisansVarMi) bonusKademeler++;
+
+            // 6. Bölge Hizmeti Bonusu
+            const hizmetBolgesi = document.getElementById('hizmetBolgesi').value;
+            const bolgeGorevBaslamaTarihiString = document.getElementById('bolgeGorevBaslamaTarihi').value;
+            const bolgeGorevBitisTarihiString = document.getElementById('bolgeGorevBitisTarihi').value;
+
+            if (hizmetBolgesi === '6' && bolgeGorevBaslamaTarihiString) {
+                const bolgeBaslama = new Date(bolgeGorevBaslamaTarihiString);
+                let hesaplamaBitisTarihi = bugun; 
+
+                if (bolgeGorevBitisTarihiString) {
+                    hesaplamaBitisTarihi = new Date(bolgeGorevBitisTarihiString);
+                    if (hesaplamaBitisTarihi < bolgeBaslama) return showError('Bölge görev bitiş tarihi, başlangıç tarihinden önce olamaz.');
+                }
+                
+                const efektifBolgeBaslamaTarihi = new Date(Math.max(kadroluBaslamaTarihi, bolgeBaslama));
+                
+                if (efektifBolgeBaslamaTarihi < hesaplamaBitisTarihi) {
+                    const bolgedekiHizmet = calculateDateDifference(efektifBolgeBaslamaTarihi, hesaplamaBitisTarihi);
+                    bonusKademeler += Math.floor(bolgedekiHizmet.years / 2);
+                }
+            }
+
+            // 6. FİNAL HESAPLAMA
+            let toplamKademe = baslangicKademe + hizmetYili + bonusKademeler;
+            let mevcutDerece = baslangicDerece - Math.floor((toplamKademe - 1) / 3);
+            let mevcutKademe = ((toplamKademe - 1) % 3) + 1;
+            
+            // Özel derece ilerlemeleri
+            if (egitim === 'doktora') mevcutDerece--; 
+            if (egitim === 'uzman_tabip') mevcutDerece--; // GÜNCELLENDİ (+1 Derece)
+            
+            if (mevcutDerece < 1) mevcutDerece = 1; // En düşük derece 1 olabilir
+
+            // 7. SONUCU GÖSTER
+            const sonucBaslik = `<h3 class="text-lg font-bold text-green-800 mb-2">Hesaplama Sonuçları</h3>`;
+            const hizmetSuresiMetni = `<p class="text-md text-green-700"><strong>Dereceye Esas Hizmet Süreniz:</strong> ${netHizmetSuresi.years} yıl, ${netHizmetSuresi.months} ay, ${netHizmetSuresi.days} gün</p>`;
+            const dereceSonucMetni = `<p class="mt-1 text-md text-green-700"><strong>Mevcut Derece/Kademeniz:</strong> ${mevcutDerece} / ${mevcutKademe}</p>`;
+            
+            sonucAlani.className = 'mt-6 p-4 bg-green-50 border-l-4 border-green-500 rounded-r-lg';
+            sonucAlani.innerHTML = sonucBaslik + hizmetSuresiMetni + dereceSonucMetni;
+            sonucAlani.classList.remove('hidden');
+        }
+    </script>
+
+</body>
+</html>
+
+
