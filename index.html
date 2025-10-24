@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nihai Memuriyet Hesaplama</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <title>DERECE KADEME HESAPLAMA UYGULAMASI</title>
+    <!-- Tailwind CSS CDN --><script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts --><link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -26,32 +24,38 @@
         input[type=number] {
           -moz-appearance: textfield;
         }
+        
+        #egitim.health-option-selected {
+            color: #D97706; /* tailwind orange-600 */
+            font-weight: 600; /* semibold */
+        }
+        /* Özel metin gölgesi sınıfı */
+        .text-shadow-md {
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
     </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen p-4">
 
-    <div class="w-full max-w-2xl bg-white rounded-xl shadow-lg p-6 md:p-8">
+    <!-- Yeni Başlık Bölümü --><header class="w-full max-w-2xl bg-gradient-to-r from-indigo-500 to-purple-600 rounded-t-xl shadow-lg p-6 md:p-8 mb-0 text-center">
+        <h1 class="text-3xl md:text-4xl font-extrabold text-white text-shadow-md">DERECE KADEME HESAPLAMA UYGULAMASI</h1>
+    </header>
+
+    <div class="w-full max-w-2xl bg-white rounded-b-xl shadow-lg p-6 md:p-8 mt-0">
         
-        <div class="text-center mb-8">
-            <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Nihai Memuriyet Hesaplama</h1>
-            <p class="text-gray-500 mt-2">Derece ve kademenizi tüm detaylarıyla hesaplayın.</p>
-        </div>
-
-        <!-- Form Alanı -->
-        <form id="hesaplamaFormu" class="space-y-6">
+        <!-- Form Alanı --><form id="hesaplamaFormu" class="space-y-6">
             
-            <!-- Temel Bilgiler Bölümü -->
-            <div>
+            <!-- Temel Bilgiler Bölümü --><div>
                 <h3 class="text-lg font-semibold text-gray-900 border-b pb-2 mb-4">Temel Bilgiler</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label for="egitim" class="block text-sm font-medium text-gray-700 mb-1">Eğitim Durumu / Unvan</label>
-                        <select id="egitim" onchange="toggleDinamikAlanlar()" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
-                            <option value="saglik_onlisans">💊SAĞLIK ÖNLİSANS (2 Yıllık)</option>
-                            <option value="saglik_lisans">💊SAĞLIK LİSANS (4 Yıllık)</option>
-                            <option value="dis_tabibi">💊DİŞ TABİBİ</option>
-                            <option value="tabip">💊TABİP</option>
-                            <option value="uzman_tabip">💊UZMAN TABİP</option>
+                        <select id="egitim" onchange="toggleDinamikAlanlar(); styleEgitimSelect();" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                            <option value="SAGLIK_ONLISANS">⚕️ SAĞLIK ÖNLİSANS (2 YILLIK)</option>
+                            <option value="SAGLIK_LISANS">⚕️ SAĞLIK LİSANS (4 YILLIK)</option>
+                            <option value="DIS_TABIBI">⚕️ DİŞ TABİBİ</option>
+                            <option value="TABIP">⚕️ TABİP</option>
+                            <option value="UZMAN_TABIP">⚕️ UZMAN TABİP</option>
                             <option value="ilk">İlkokul</option>
                             <option value="orta">Ortaokul</option>
                             <option value="lise" selected>Lise ve Dengi</option>
@@ -67,16 +71,14 @@
                     </div>
                 </div>
                 
-                <!-- Yüksek Lisans (Lisans seçilirse görünür) -->
-                <div id="yuksekLisansAlani" class="hidden mt-4 pl-1">
+                <!-- Yüksek Lisans (Lisans seçilirse görünür) --><div id="yuksekLisansAlani" class="hidden mt-4 pl-1">
                     <div class="flex items-start">
                         <input id="yuksekLisansVarMi" type="checkbox" class="h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 mt-0.5">
                         <label for="yuksekLisansVarMi" class="ml-3 block text-sm font-medium text-gray-700">Yüksek lisansınız var mı? (+1 Kademe)</label>
                     </div>
                 </div>
 
-                <!-- İstifa Bilgileri (Tabip veya Uzman Tabip seçilirse görünür) -->
-                <div id="tabipIstifaAlani" class="hidden mt-4 space-y-4">
+                <!-- İstifa Bilgileri (Tabip veya Uzman Tabip seçilirse görünür) --><div id="tabipIstifaAlani" class="hidden mt-4 space-y-4">
                     <hr>
                     <h4 class="text-md font-semibold text-gray-800">İstifa Bilgileri</h4>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -93,13 +95,11 @@
                 </div>
             </div>
 
-            <!-- İstisnai Durumlar ve Hizmet Detayları Bölümü -->
-            <div>
+            <!-- İstisnai Durumlar ve Hizmet Detayları Bölümü --><div>
                 <h3 class="text-lg font-semibold text-gray-900 border-b pb-2 mb-4">İstisnai Durumlar ve Hizmet Detayları</h3>
                 <div class="space-y-4">
                     
-                    <!-- Kadroya Geçiş -->
-                    <div class="flex items-start">
+                    <!-- Kadroya Geçiş --><div class="flex items-start">
                         <input id="kadroyaGecisVarMi" type="checkbox" onchange="toggleKadroTarihi()" class="h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 mt-0.5">
                         <label for="kadroyaGecisVarMi" class="ml-3 block text-sm font-medium text-gray-700">Sözleşmeli statüden kadroya geçtim.</label>
                     </div>
@@ -110,8 +110,7 @@
                     
                     <hr class="my-2">
                     
-                    <!-- Ücretsiz İzin -->
-                    <div>
+                    <!-- Ücretsiz İzin --><div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Ücretsiz İzin Süresi (Toplam)</label>
                         <div class="grid grid-cols-3 gap-2">
                             <input type="number" id="izinYil" placeholder="Yıl" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition text-center">
@@ -123,8 +122,7 @@
 
                     <hr class="my-2">
                     
-                    <!-- Hizmet Bölgesi -->
-                    <div>
+                    <!-- Hizmet Bölgesi --><div>
                         <label for="hizmetBolgesi" class="block text-sm font-medium text-gray-700 mb-1">Görev Yapılan Hizmet Bölgesi</label>
                         <select id="hizmetBolgesi" onchange="toggleBolgeTarihAlani()" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
                             <option value="0">Seçiniz...</option>
@@ -136,8 +134,7 @@
                             <option value="6">6. Bölge</option>
                         </select>
                     </div>
-                    <!-- 6. Bölge Tarih Alanı (Gizli) -->
-                    <div id="bolgeTarihAlani" class="hidden pl-2 space-y-4">
+                    <!-- 6. Bölge Tarih Alanı (Gizli) --><div id="bolgeTarihAlani" class="hidden pl-2 space-y-4">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                              <div>
                                 <label for="bolgeGorevBaslamaTarihi" class="block text-sm font-medium text-gray-700 mb-1">Bölgedeki Göreve Başlama T.</label>
@@ -153,8 +150,7 @@
 
                     <hr class="my-2">
                     
-                    <!-- Disiplin Cezası -->
-                    <div class="flex items-start">
+                    <!-- Disiplin Cezası --><div class="flex items-start">
                         <input id="cezaYok" type="checkbox" class="h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 mt-0.5">
                         <label for="cezaYok" class="ml-3 block text-sm font-medium text-gray-700">Son 8 yıl içinde disiplin cezası almadım. (+1 Kademe)</label>
                     </div>
@@ -162,38 +158,51 @@
                 </div>
             </div>
 
-            <!-- Hesapla Butonu -->
-            <button type="button" onclick="hesapla()" class="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-transform transform hover:scale-105 shadow-md">
+            <!-- Hesapla Butonu --><button type="button" onclick="hesapla()" class="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-transform transform hover:scale-105 shadow-md">
                 Hesapla
             </button>
         </form>
 
-        <!-- Sonuç Alanı -->
-        <div id="sonucAlani" class="hidden mt-6 p-4 border-l-4 rounded-r-lg"></div>
+        <!-- Sonuç Alanı --><div id="sonucAlani" class="hidden mt-6 p-4 border-l-4 rounded-r-lg"></div>
         
     </div>
 
-    <!-- JavaScript Kodları -->
-    <script>
+    <!-- JavaScript Kodları --><script>
         
+        // Seçime göre select kutusunu renklendirir
+        function styleEgitimSelect() {
+            const egitimSelect = document.getElementById('egitim');
+            const egitim = egitimSelect.value;
+            const isHealth = egitim === 'SAGLIK_ONLISANS' || 
+                             egitim === 'SAGLIK_LISANS' || 
+                             egitim === 'DIS_TABIBI' || 
+                             egitim === 'TABIP' || 
+                             egitim === 'UZMAN_TABIP';
+            
+            egitimSelect.classList.toggle('health-option-selected', isHealth);
+        }
+
         // Eğitim durumuna göre Y. Lisans ve İstifa alanlarını göster/gizle
         function toggleDinamikAlanlar() {
             const egitim = document.getElementById('egitim').value;
             
             // Yüksek Lisans Alanı
             const yuksekLisansAlani = document.getElementById('yuksekLisansAlani');
-            const isLisans = egitim === 'lisans' || egitim === 'saglik_lisans';
+            // GÜNCELLENDİ: Diş Tabibi, Tabip ve Uzman Tabip eklendi
+            const isLisans = egitim === 'lisans' || egitim === 'SAGLIK_LISANS' || egitim === 'DIS_TABIBI' || egitim === 'TABIP' || egitim === 'UZMAN_TABIP';
             yuksekLisansAlani.classList.toggle('hidden', !isLisans);
             if (!isLisans) document.getElementById('yuksekLisansVarMi').checked = false;
 
             // Tabip İstifa Alanı (Uzman Tabip için de geçerli)
             const tabipIstifaAlani = document.getElementById('tabipIstifaAlani');
-            const isTabip = egitim === 'tabip' || egitim === 'uzman_tabip';
+            const isTabip = egitim === 'TABIP' || egitim === 'UZMAN_TABIP';
             tabipIstifaAlani.classList.toggle('hidden', !isTabip);
             if (!isTabip) {
                 document.getElementById('istifaTarihi').value = '';
                 document.getElementById('tekrarBaslamaTarihi').value = '';
             }
+            
+            styleEgitimSelect(); // Renk stilini de güncelle/sıfırla
         }
 
         // Kadroya geçiş tarihi alanını göster/gizle
@@ -310,7 +319,6 @@
                 if (kadroluBaslamaTarihi < baslamaTarihi) return showError('Kadroya geçiş tarihi, ilk başlama tarihinden önce olamaz.');
             }
             
-            // GÜNCELLENDİ: 15.01.2016 tarihi ve öncesi (<=) kontrolü
             const is2016Oncesi = baslamaTarihi <= new Date('2016-01-15');
             let baslangicDerece = 0, baslangicKademe = 0;
 
@@ -319,19 +327,18 @@
                 case 'orta': baslangicDerece = 14; baslangicKademe = 2; break;
                 case 'lise': baslangicDerece = 13; baslangicKademe = 3; break;
                 case 'onlisans': baslangicDerece = 10; baslangicKademe = 2; break;
-                case 'saglik_onlisans': baslangicDerece = 10; baslangicKademe = 2; break;
+                case 'SAGLIK_ONLISANS': baslangicDerece = 10; baslangicKademe = 2; break;
                 case 'lisans': baslangicDerece = 9; baslangicKademe = 1; break;
-                case 'saglik_lisans': baslangicDerece = 8; baslangicKademe = 1; break;
-                case 'dis_tabibi': baslangicDerece = 8; baslangicKademe = 2; break;
-                case 'tabip': baslangicDerece = 8; baslangicKademe = 3; break;
-                case 'uzman_tabip': baslangicDerece = 8; baslangicKademe = 3; break;
+                case 'SAGLIK_LISANS': baslangicDerece = 8; baslangicKademe = 1; break;
+                case 'DIS_TABIBI': baslangicDerece = 8; baslangicKademe = 2; break;
+                case 'TABIP': baslangicDerece = 8; baslangicKademe = 3; break;
+                case 'UZMAN_TABIP': baslangicDerece = 8; baslangicKademe = 3; break;
                 case 'yukseklisans': baslangicDerece = 9; baslangicKademe = 2; break;
                 case 'doktora': baslangicDerece = 9; baslangicKademe = 1; break;
             }
 
             let bonusKademeler = 0;
             if (cezaYok) bonusKademeler++;
-            // if (is2016Oncesi) bonusKademeler++; // GÜNCELLENDİ: Buradan kaldırıldı
             if (yuksekLisansVarMi) bonusKademeler++;
 
             // 6. Bölge Hizmeti Bonusu
@@ -356,17 +363,41 @@
                 }
             }
 
-            // 6. FİNAL HESAPLAMA
-            let toplamKademe = baslangicKademe + hizmetYili + bonusKademeler;
-            let mevcutDerece = baslangicDerece - Math.floor((toplamKademe - 1) / 3);
-            let mevcutKademe = ((toplamKademe - 1) % 3) + 1;
+            // 6. FİNAL HESAPLAMA (GÜNCELLENMİŞ 1/4 MANTIĞI)
+            let toplamKazanilanKademe = hizmetYili + bonusKademeler;
+            let toplamKademeler = baslangicKademe + toplamKazanilanKademe;
+
+            let hesaplananDerece = baslangicDerece - Math.floor((toplamKademeler - 1) / 3);
+            let hesaplananKademe = ((toplamKademeler - 1) % 3) + 1;
             
-            // Özel derece ilerlemeleri
-            if (egitim === 'doktora') mevcutDerece--; 
-            if (egitim === 'uzman_tabip') mevcutDerece--; 
-            if (is2016Oncesi) mevcutDerece--; // GÜNCELLENDİ: +1 Derece buraya eklendi
-            
-            if (mevcutDerece < 1) mevcutDerece = 1; // En düşük derece 1 olabilir
+            // Özel derece ilerlemelerini uygula
+            if (egitim === 'doktora') hesaplananDerece--; 
+            if (egitim === 'UZMAN_TABIP') hesaplananDerece--; 
+            if (is2016Oncesi) hesaplananDerece--;
+
+            let mevcutDerece, mevcutKademe;
+
+            // 1. DERECE TAVAN KONTROLÜ
+            if (hesaplananDerece < 1) {
+                mevcutDerece = 1;
+                // 1. derecenin altına ne kadar taştığını hesapla
+                // Örn: Hesaplanan -1/1 ise, 1 - (-1) = 2 derece taştı.
+                let tasanDereceler = 1 - hesaplananDerece; 
+                // Taşmayı kademeye çevir (2 derece * 3 = 6 kademe) + mevcut hesaplanan kademe (1) - 1
+                let tasanKademeler = (tasanDereceler * 3) + (hesaplananKademe - 1);
+                
+                // 1/1'in üzerine ekle
+                mevcutKademe = 1 + tasanKademeler;
+                
+                // 1/4 KURALI: Kademe 4'ten büyük olamaz
+                if (mevcutKademe > 4) {
+                    mevcutKademe = 4;
+                }
+            } else {
+                mevcutDerece = hesaplananDerece;
+                mevcutKademe = hesaplananKademe;
+            }
+
 
             // 7. SONUCU GÖSTER
             const sonucBaslik = `<h3 class="text-lg font-bold text-green-800 mb-2">Hesaplama Sonuçları</h3>`;
@@ -377,11 +408,15 @@
             sonucAlani.innerHTML = sonucBaslik + hizmetSuresiMetni + dereceSonucMetni;
             sonucAlani.classList.remove('hidden');
         }
+
+        // Sayfa yüklendiğinde sağlık seçeneklerinin baş harflerini büyük yap (görsel tutarlılık için)
+        // ve varsayılan seçimi renklendir
+        document.addEventListener('DOMContentLoaded', (event) => {
+            styleEgitimSelect();
+        });
     </script>
 
 </body>
 </html>
-
-
 
 
