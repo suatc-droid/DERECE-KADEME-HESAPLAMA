@@ -4,8 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DERECE KADEME HESAPLAMA UYGULAMASI</title>
-    <!-- Tailwind CSS CDN --><script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts --><link rel="preconnect" href="https://fonts.googleapis.com">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -37,16 +41,19 @@
 </head>
 <body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen p-4">
 
-    <!-- Yeni Başlık Bölümü --><header class="w-full max-w-2xl bg-gradient-to-r from-indigo-500 to-purple-600 rounded-t-xl shadow-lg p-6 md:p-8 mb-0 text-center">
+    <!-- GÜNCELLENDİ: Modern Başlık -->
+    <header class="w-full max-w-2xl bg-gradient-to-r from-indigo-500 to-purple-600 rounded-t-xl shadow-lg p-6 md:p-8 mb-0 text-center">
         <h1 class="text-3xl md:text-4xl font-extrabold text-white text-shadow-md">DERECE KADEME HESAPLAMA UYGULAMASI</h1>
     </header>
 
     <div class="w-full max-w-2xl bg-white rounded-b-xl shadow-lg p-6 md:p-8 mt-0">
         
-        <!-- Form Alanı --><form id="hesaplamaFormu" class="space-y-6">
+        <!-- Form Alanı -->
+        <form id="hesaplamaFormu" class="space-y-6">
             
-            <!-- Temel Bilgiler Bölümü --><div>
-                <h3 class="text-lg font-semibold text-gray-900 border-b pb-2 mb-4">Temel Bilgiler</h3>
+            <!-- Temel Bilgiler Bölümü -->
+            <div>
+                <h3 class="text-lg font-semibold text-gray-900 border-b pb-2 mb-4">📝 Temel Bilgiler</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label for="egitim" class="block text-sm font-medium text-gray-700 mb-1">Eğitim Durumu / Unvan</label>
@@ -71,14 +78,16 @@
                     </div>
                 </div>
                 
-                <!-- Yüksek Lisans (Lisans seçilirse görünür) --><div id="yuksekLisansAlani" class="hidden mt-4 pl-1">
+                <!-- Yüksek Lisans (Lisans seçilirse görünür) -->
+                <div id="yuksekLisansAlani" class="hidden mt-4 pl-1">
                     <div class="flex items-start">
                         <input id="yuksekLisansVarMi" type="checkbox" class="h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 mt-0.5">
                         <label for="yuksekLisansVarMi" class="ml-3 block text-sm font-medium text-gray-700">Yüksek lisansınız var mı? (+1 Kademe)</label>
                     </div>
                 </div>
 
-                <!-- İstifa Bilgileri (Tabip veya Uzman Tabip seçilirse görünür) --><div id="tabipIstifaAlani" class="hidden mt-4 space-y-4">
+                <!-- İstifa Bilgileri (Tabip veya Uzman Tabip seçilirse görünür) -->
+                <div id="tabipIstifaAlani" class="hidden mt-4 space-y-4">
                     <hr>
                     <h4 class="text-md font-semibold text-gray-800">İstifa Bilgileri</h4>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -95,11 +104,13 @@
                 </div>
             </div>
 
-            <!-- İstisnai Durumlar ve Hizmet Detayları Bölümü --><div>
-                <h3 class="text-lg font-semibold text-gray-900 border-b pb-2 mb-4">İstisnai Durumlar ve Hizmet Detayları</h3>
+            <!-- İstisnai Durumlar ve Hizmet Detayları Bölümü -->
+            <div>
+                <h3 class="text-lg font-semibold text-gray-900 border-b pb-2 mb-4">✨ İstisnai Durumlar ve Hizmet Detayları</h3>
                 <div class="space-y-4">
                     
-                    <!-- Kadroya Geçiş --><div class="flex items-start">
+                    <!-- Kadroya Geçiş -->
+                    <div class="flex items-start">
                         <input id="kadroyaGecisVarMi" type="checkbox" onchange="toggleKadroTarihi()" class="h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 mt-0.5">
                         <label for="kadroyaGecisVarMi" class="ml-3 block text-sm font-medium text-gray-700">Sözleşmeli statüden kadroya geçtim.</label>
                     </div>
@@ -110,7 +121,8 @@
                     
                     <hr class="my-2">
                     
-                    <!-- Ücretsiz İzin --><div>
+                    <!-- Ücretsiz İzin -->
+                    <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Ücretsiz İzin Süresi (Toplam)</label>
                         <div class="grid grid-cols-3 gap-2">
                             <input type="number" id="izinYil" placeholder="Yıl" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition text-center">
@@ -122,7 +134,8 @@
 
                     <hr class="my-2">
                     
-                    <!-- Hizmet Bölgesi --><div>
+                    <!-- Hizmet Bölgesi -->
+                    <div>
                         <label for="hizmetBolgesi" class="block text-sm font-medium text-gray-700 mb-1">Görev Yapılan Hizmet Bölgesi</label>
                         <select id="hizmetBolgesi" onchange="toggleBolgeTarihAlani()" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
                             <option value="0">Seçiniz...</option>
@@ -134,7 +147,8 @@
                             <option value="6">6. Bölge</option>
                         </select>
                     </div>
-                    <!-- 6. Bölge Tarih Alanı (Gizli) --><div id="bolgeTarihAlani" class="hidden pl-2 space-y-4">
+                    <!-- 6. Bölge Tarih Alanı (Gizli) -->
+                    <div id="bolgeTarihAlani" class="hidden pl-2 space-y-4">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                              <div>
                                 <label for="bolgeGorevBaslamaTarihi" class="block text-sm font-medium text-gray-700 mb-1">Bölgedeki Göreve Başlama T.</label>
@@ -150,7 +164,8 @@
 
                     <hr class="my-2">
                     
-                    <!-- Disiplin Cezası --><div class="flex items-start">
+                    <!-- Disiplin Cezası -->
+                    <div class="flex items-start">
                         <input id="cezaYok" type="checkbox" class="h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 mt-0.5">
                         <label for="cezaYok" class="ml-3 block text-sm font-medium text-gray-700">Son 8 yıl içinde disiplin cezası almadım. (+1 Kademe)</label>
                     </div>
@@ -158,16 +173,19 @@
                 </div>
             </div>
 
-            <!-- Hesapla Butonu --><button type="button" onclick="hesapla()" class="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-transform transform hover:scale-105 shadow-md">
+            <!-- Hesapla Butonu -->
+            <button type="button" onclick="hesapla()" class="w-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-bold py-3 px-4 rounded-md hover:from-indigo-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all transform hover:scale-[1.02] shadow-md">
                 Hesapla
             </button>
         </form>
 
-        <!-- Sonuç Alanı --><div id="sonucAlani" class="hidden mt-6 p-4 border-l-4 rounded-r-lg"></div>
+        <!-- Sonuç Alanı -->
+        <div id="sonucAlani" class="hidden mt-6 p-4 border-l-4 rounded-r-lg"></div>
         
     </div>
 
-    <!-- JavaScript Kodları --><script>
+    <!-- JavaScript Kodları -->
+    <script>
         
         // Seçime göre select kutusunu renklendirir
         function styleEgitimSelect() {
@@ -188,7 +206,6 @@
             
             // Yüksek Lisans Alanı
             const yuksekLisansAlani = document.getElementById('yuksekLisansAlani');
-            // GÜNCELLENDİ: Diş Tabibi, Tabip ve Uzman Tabip eklendi
             const isLisans = egitim === 'lisans' || egitim === 'SAGLIK_LISANS' || egitim === 'DIS_TABIBI' || egitim === 'TABIP' || egitim === 'UZMAN_TABIP';
             yuksekLisansAlani.classList.toggle('hidden', !isLisans);
             if (!isLisans) document.getElementById('yuksekLisansVarMi').checked = false;
@@ -380,16 +397,11 @@
             // 1. DERECE TAVAN KONTROLÜ
             if (hesaplananDerece < 1) {
                 mevcutDerece = 1;
-                // 1. derecenin altına ne kadar taştığını hesapla
-                // Örn: Hesaplanan -1/1 ise, 1 - (-1) = 2 derece taştı.
                 let tasanDereceler = 1 - hesaplananDerece; 
-                // Taşmayı kademeye çevir (2 derece * 3 = 6 kademe) + mevcut hesaplanan kademe (1) - 1
                 let tasanKademeler = (tasanDereceler * 3) + (hesaplananKademe - 1);
                 
-                // 1/1'in üzerine ekle
                 mevcutKademe = 1 + tasanKademeler;
                 
-                // 1/4 KURALI: Kademe 4'ten büyük olamaz
                 if (mevcutKademe > 4) {
                     mevcutKademe = 4;
                 }
@@ -400,11 +412,16 @@
 
 
             // 7. SONUCU GÖSTER
-            const sonucBaslik = `<h3 class="text-lg font-bold text-green-800 mb-2">Hesaplama Sonuçları</h3>`;
-            const hizmetSuresiMetni = `<p class="text-md text-green-700"><strong>Dereceye Esas Hizmet Süreniz:</strong> ${netHizmetSuresi.years} yıl, ${netHizmetSuresi.months} ay, ${netHizmetSuresi.days} gün</p>`;
-            const dereceSonucMetni = `<p class="mt-1 text-md text-green-700"><strong>Mevcut Derece/Kademeniz:</strong> ${mevcutDerece} / ${mevcutKademe}</p>`;
+            // GÜNCELLENDİ: Sonuç alanı tasarımı yeşil tonlara çevrildi
+            const sonucBaslik = `<h3 class="text-xl font-bold text-green-800 mb-3 text-center">Hesaplama Sonuçları</h3>`;
+            const hizmetSuresiMetni = `<p class="text-base text-green-700 text-center mb-2"><strong>Dereceye Esas Hizmet Süreniz:</strong><br>${netHizmetSuresi.years} yıl, ${netHizmetSuresi.months} ay, ${netHizmetSuresi.days} gün</p>`;
             
-            sonucAlani.className = 'mt-6 p-4 bg-green-50 border-l-4 border-green-500 rounded-r-lg';
+            const dereceSonucMetni = `<div class="mt-4 bg-white p-4 rounded-lg shadow-inner text-center">
+                                          <p class="text-base font-semibold text-gray-600">Mevcut Derece / Kademeniz</p>
+                                          <p class="text-5xl font-bold text-indigo-600">${mevcutDerece} <span class="text-gray-400">/</span> ${mevcutKademe}</p>
+                                        </div>`;
+            
+            sonucAlani.className = 'mt-6 p-5 bg-green-50 border border-green-200 rounded-lg shadow-md'; // Arka plan yeşil yapıldı
             sonucAlani.innerHTML = sonucBaslik + hizmetSuresiMetni + dereceSonucMetni;
             sonucAlani.classList.remove('hidden');
         }
@@ -418,5 +435,4 @@
 
 </body>
 </html>
-
 
